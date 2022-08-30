@@ -56,4 +56,12 @@ public interface DroneService {
      */
     List<Drone> getAvailableDrones();
 
+    /**
+     * Get battery level for given drone serial no
+     *
+     * @param serialNo
+     * @return
+     */
+    int getBatteryLevel(String serialNo);
+
 }

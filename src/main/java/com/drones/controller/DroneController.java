@@ -1,6 +1,7 @@
 package com.drones.controller;
 
 import com.drones.bean.drone.DroneAvailableVo;
+import com.drones.bean.drone.DroneBatteryLevelVo;
 import com.drones.bean.drone.DroneRegistrationSuccessVo;
 import com.drones.bean.drone.DroneVo;
 import com.drones.bean.medication.MedLoadSuccessResponseVo;
@@ -74,6 +75,18 @@ public class DroneController {
         var drones = droneService.getAvailableDrones();
         var droneVos = drones.stream().map(DroneVo::new).toList();
         return ResponseEntity.ok(new DroneAvailableVo(droneVos));
+    }
+
+
+    /**
+     * Polling this endpoint and send battery level (percentage) with drone serial number
+     *
+     * @param droneSerial
+     */
+    @GetMapping(path = "{droneSerial}/battery-level")
+    ResponseEntity<DroneBatteryLevelVo> getBatteryStatus(@PathVariable String droneSerial) {
+        var batteryLevel = droneService.getBatteryLevel(droneSerial);
+        return ResponseEntity.ok(new DroneBatteryLevelVo(batteryLevel));
     }
 
 }

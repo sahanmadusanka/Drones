@@ -72,6 +72,7 @@ public class DroneServiceImpl implements DroneService {
 
     /**
      * Check drone in ready to loading state with "state"
+     *
      * @param drone
      * @return boolean if true drone is ready to loading
      */
@@ -82,6 +83,7 @@ public class DroneServiceImpl implements DroneService {
 
     /**
      * Check drone is ready to loading with battery level
+     *
      * @param drone
      * @return boolean if true drone is ready to loading
      */
@@ -92,11 +94,26 @@ public class DroneServiceImpl implements DroneService {
 
     /**
      * Get all available drone which can be ready for loading
+     *
      * @return
      */
     @Override
-    public List<Drone> getAvailableDrones(){
+    public List<Drone> getAvailableDrones() {
         return droneRepository.getAvailableDroneForLoading(DroneState.IDLE, loadingMinCapacity);
+    }
+
+    /**
+     * Get battery level for given drone serial no
+     *
+     * @param serialNo
+     * @return
+     */
+    @Override
+    public int getBatteryLevel(String serialNo) {
+        return droneRepository.findBySerialNumber(serialNo)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find drone with serial:" + serialNo))
+                .getDroneStatus()
+                .getBatteryCapacity();
     }
 
 }
