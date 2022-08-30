@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "adf61781-2df0-4181-b4c8-d4e7bcc13281",
+		"name": "The Drones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2933581"
+	},
+	"item": [
+		{
+			"name": "Register a drone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"serialNumber\" : \"12345\",\n    \"model\" : \"Middleweight\",\n    \"weightLimit\" : 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/drone/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drone",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Load medications",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\": [\n        {\n            \"code\": \"TAPAZOLE\",\n            \"quantity\": 1\n        },\n        {\n            \"code\": \"HALDOL\",\n            \"quantity\": 1\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/drone/{{drone_serial}}/load-medication",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drone",
+						"{{drone_serial}}",
+						"load-medication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check loaded medications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/drone/{{drone_serial}}/check-medication",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drone",
+						"{{drone_serial}}",
+						"check-medication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check available drones to loading",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/drone/available-to-load",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drone",
+						"available-to-load"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check battery level for a drone",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/drone/{{drone_serial}}/battery-level",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"drone",
+						"{{drone_serial}}",
+						"battery-level"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "drone_serial",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
