@@ -1,8 +1,14 @@
 package com.drones.controller;
 
+import com.drones.bean.drone.DroneRegistrationSuccessVo;
 import com.drones.bean.drone.DroneVo;
+import com.drones.bean.medication.MedLoadSuccessResponseVo;
+import com.drones.bean.medication.MedLoadRequestVo;
 import com.drones.service.DroneService;
+import com.drones.service.DroneMedicationService;
 import com.drones.service.impl.DroneServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +20,12 @@ import javax.validation.Valid;
 public class DroneController {
 
     private DroneService droneService;
+    private DroneMedicationService droneMedicationService;
 
-    DroneController(DroneServiceImpl droneService) {
+    DroneController(DroneServiceImpl droneService, DroneMedicationService droneMedicationService) {
         this.droneService = droneService;
+        this.droneMedicationService = droneMedicationService;
+
     }
 
     /**
@@ -25,9 +34,23 @@ public class DroneController {
      * @param drone
      */
     @PostMapping(path = "/register")
-    void register(@Valid @RequestBody DroneVo drone) {
-        droneService.registerDrone(drone);
+    ResponseEntity<DroneRegistrationSuccessVo> register(@Valid @RequestBody DroneVo droneVo) {
+        droneService.registerDrone(droneVo);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new DroneRegistrationSuccessVo("Drone registration success"));
     }
 
+    /**
+     * Load medication to a Drone
+     *
+     * @param serialNo
+     * @param loadRequest
+     */
+    @PutMapping(path = "/{serialNo}/load-medication")
+    ResponseEntity<MedLoadSuccessResponseVo> loadMedication(@PathVariable String serialNo,
+                                                            @Valid @RequestBody MedLoadRequestVo loadRequest) {
+        droneMedicationService.loadToDrone(serialNo, loadRequest);
+        return ResponseEntity.ok(new MedLoadSuccessResponseVo("Successfully loaded medication to the drone"));
+    }
 
 }

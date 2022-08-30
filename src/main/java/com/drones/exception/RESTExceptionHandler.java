@@ -41,7 +41,8 @@ public class RESTExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidInputException.class)
+    @ExceptionHandler({InvalidInputException.class, DataNotFoundException.class,
+            DataIntegrityException.class})
     public ResponseEntity<Object> handleInvalidInputException(InvalidInputException exception) {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", exception.getMessage());

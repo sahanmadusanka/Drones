@@ -1,7 +1,6 @@
 package com.drones.entity;
 
 import com.drones.bean.drone.DroneModel;
-import com.drones.bean.drone.DroneState;
 import com.drones.bean.drone.DroneVo;
 
 import javax.persistence.*;
@@ -23,7 +22,7 @@ public class Drone {
     private Integer weightLimit;
     private LocalDateTime registeredDate;
 
-    @OneToOne(mappedBy = "drone", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "drone", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private DroneStatus droneStatus;
 
     public Drone() {
@@ -77,5 +76,13 @@ public class Drone {
 
     public void setRegisteredDate(LocalDateTime registeredDate) {
         this.registeredDate = registeredDate;
+    }
+
+    public DroneStatus getDroneStatus() {
+        return droneStatus;
+    }
+
+    public void setDroneStatus(DroneStatus droneStatus) {
+        this.droneStatus = droneStatus;
     }
 }
