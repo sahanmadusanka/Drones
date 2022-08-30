@@ -3,6 +3,7 @@ package com.drones.service;
 import com.drones.bean.drone.DroneState;
 import com.drones.bean.drone.DroneVo;
 import com.drones.entity.Drone;
+import com.drones.entity.DroneStatus;
 import com.drones.exception.DataNotFoundException;
 
 import java.util.List;
@@ -64,4 +65,18 @@ public interface DroneService {
      */
     int getBatteryLevel(String serialNo);
 
+    /**
+     * Get all drones
+     *
+     * @return List<Drone>
+     */
+    List<Drone> getAllDrones();
+
+    /**
+     * Update drone battery level
+     *
+     * @param droneStatus
+     * @param batteryLevel
+     */
+    void updateBatteryLevel(DroneStatus droneStatus, int batteryLevel);
 }

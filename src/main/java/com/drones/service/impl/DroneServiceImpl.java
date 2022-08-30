@@ -3,14 +3,18 @@ package com.drones.service.impl;
 import com.drones.bean.drone.DroneState;
 import com.drones.bean.drone.DroneVo;
 import com.drones.entity.Drone;
+import com.drones.entity.DroneStatus;
 import com.drones.exception.BaseException;
 import com.drones.exception.DataNotFoundException;
 import com.drones.repository.DroneRepository;
+import com.drones.repository.DroneStatusRepository;
 import com.drones.service.DroneService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,12 +22,14 @@ import java.util.List;
 public class DroneServiceImpl implements DroneService {
 
     private DroneRepository droneRepository;
+    private DroneStatusRepository droneStatusRepository;
 
     @Value("${drone.battery.loadingMinLevel:25}")
     private int loadingMinCapacity;
 
-    DroneServiceImpl(DroneRepository droneRepository) {
+    public DroneServiceImpl(DroneRepository droneRepository, DroneStatusRepository droneStatusRepository) {
         this.droneRepository = droneRepository;
+        this.droneStatusRepository = droneStatusRepository;
     }
 
     /**
@@ -32,6 +38,7 @@ public class DroneServiceImpl implements DroneService {
      * @param droneVo
      */
     @Transactional
+    @CacheEvict(value = "drones", allEntries = true) // Clear cache each time new drone get registered
     public Drone registerDrone(DroneVo droneVo) {
         var drone = new Drone(droneVo);
         //TODO Add drone serial duplicate validator
@@ -114,6 +121,24 @@ public class DroneServiceImpl implements DroneService {
                 .orElseThrow(() -> new DataNotFoundException("Cannot find drone with serial:" + serialNo))
                 .getDroneStatus()
                 .getBatteryCapacity();
+    }
+
+    @Override
+    public List<Drone> getAllDrones() {
+        List<Drone> drones = new ArrayList<>();
+        droneRepository.findAll().forEach(drones::add);
+        return drones;
+    }
+
+    /**
+     * Update drone battery level
+     *
+     * @param droneStatus
+     * @param batteryLevel
+     */
+    public void updateBatteryLevel(DroneStatus droneStatus, int batteryLevel) {
+        droneStatus.setBatteryCapacity(batteryLevel);
+        droneStatusRepository.save(droneStatus);
     }
 
 }

@@ -103,7 +103,7 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
                                                            MedLoadRequestVo medicationCodes) {
         List<DroneMedication> droneMedications = new ArrayList<>();
 
-        for (MedLoadVo medicationLoad : medicationCodes.items()) {
+        for (var medicationLoad : medicationCodes.items()) {
             var droneMedication = new DroneMedication();
             var medication = medications.stream()
                     .filter(med -> medicationLoad.code().equals(med.getCode()))
