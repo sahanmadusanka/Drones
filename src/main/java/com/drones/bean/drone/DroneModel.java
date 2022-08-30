@@ -15,13 +15,13 @@ public enum DroneModel {
         this.model = model;
     }
 
-    public String getModel() {
+    public String getModelName() {
         return model;
     }
 
     public static DroneModel findByModel(String modelName){
         for(var model : values()){
-            if(model.getModel().equalsIgnoreCase(modelName)){
+            if(model.getModelName().equalsIgnoreCase(modelName)){
                 return model;
             }
         }

@@ -5,10 +5,13 @@ import com.drones.bean.drone.DroneVo;
 import com.drones.entity.Drone;
 import com.drones.exception.DataNotFoundException;
 
+import java.util.List;
+
 public interface DroneService {
 
     /**
      * Register a new drone
+     *
      * @param droneVo
      * @return Drone
      */
@@ -16,6 +19,7 @@ public interface DroneService {
 
     /**
      * Get a drone by serial number
+     *
      * @return Drone
      * @throws DataNotFoundException when drone cannot find with given serial number
      */
@@ -23,6 +27,7 @@ public interface DroneService {
 
     /**
      * Set/Change drone state
+     *
      * @param drone
      * @param droneStatus
      */
@@ -30,6 +35,7 @@ public interface DroneService {
 
     /**
      * Check drone in ready to loading state with "state"
+     *
      * @param drone
      * @return boolean if true drone is ready to loading
      */
@@ -37,9 +43,17 @@ public interface DroneService {
 
     /**
      * Check drone is ready to loading with battery level
+     *
      * @param drone
      * @return boolean if true drone is ready to loading
      */
     boolean isDroneReadyToLoadWithBatteryLevel(Drone drone);
+
+    /**
+     * Get all available drone which can be ready for loading
+     *
+     * @return
+     */
+    List<Drone> getAvailableDrones();
 
 }

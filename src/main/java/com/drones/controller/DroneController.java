@@ -1,5 +1,6 @@
 package com.drones.controller;
 
+import com.drones.bean.drone.DroneAvailableVo;
 import com.drones.bean.drone.DroneRegistrationSuccessVo;
 import com.drones.bean.drone.DroneVo;
 import com.drones.bean.medication.MedLoadSuccessResponseVo;
@@ -36,9 +37,9 @@ public class DroneController {
      */
     @PostMapping(path = "/register")
     ResponseEntity<DroneRegistrationSuccessVo> register(@Valid @RequestBody DroneVo droneVo) {
-        droneService.registerDrone(droneVo);
+        var drone = droneService.registerDrone(droneVo);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new DroneRegistrationSuccessVo("Drone registration success"));
+                .body(new DroneRegistrationSuccessVo(drone, "Drone registration success"));
     }
 
     /**
@@ -63,6 +64,16 @@ public class DroneController {
     ResponseEntity<MedLoadedResponseVo> checkMedication(@PathVariable String serialNo) {
         var medications = droneMedicationService.getLoadedMedication(serialNo);
         return ResponseEntity.ok(new MedLoadedResponseVo(medications));
+    }
+
+    /**
+     * Check available drones for load medication
+     */
+    @GetMapping(path = "/available-to-load")
+    ResponseEntity<DroneAvailableVo> checkAvailableDrones() {
+        var drones = droneService.getAvailableDrones();
+        var droneVos = drones.stream().map(DroneVo::new).toList();
+        return ResponseEntity.ok(new DroneAvailableVo(droneVos));
     }
 
 }

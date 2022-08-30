@@ -14,7 +14,6 @@ import com.drones.repository.DroneMedicationRepository;
 import com.drones.service.DroneMedicationService;
 import com.drones.service.DroneService;
 import com.drones.service.MedicationService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

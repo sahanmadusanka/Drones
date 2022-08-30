@@ -5,7 +5,6 @@ import com.drones.bean.drone.DroneVo;
 import com.drones.entity.Drone;
 import com.drones.exception.BaseException;
 import com.drones.exception.DataNotFoundException;
-import com.drones.exception.DroneStatusException;
 import com.drones.repository.DroneRepository;
 import com.drones.service.DroneService;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,4 +89,14 @@ public class DroneServiceImpl implements DroneService {
     public boolean isDroneReadyToLoadWithBatteryLevel(Drone drone) {
         return drone.getDroneStatus().getBatteryCapacity() > loadingMinCapacity;
     }
+
+    /**
+     * Get all available drone which can be ready for loading
+     * @return
+     */
+    @Override
+    public List<Drone> getAvailableDrones(){
+        return droneRepository.getAvailableDroneForLoading(DroneState.IDLE, loadingMinCapacity);
+    }
+
 }
