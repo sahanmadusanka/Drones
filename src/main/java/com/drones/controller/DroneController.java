@@ -4,6 +4,7 @@ import com.drones.bean.drone.DroneRegistrationSuccessVo;
 import com.drones.bean.drone.DroneVo;
 import com.drones.bean.medication.MedLoadSuccessResponseVo;
 import com.drones.bean.medication.MedLoadRequestVo;
+import com.drones.bean.medication.MedLoadedResponseVo;
 import com.drones.service.DroneService;
 import com.drones.service.DroneMedicationService;
 import com.drones.service.impl.DroneServiceImpl;
@@ -51,6 +52,17 @@ public class DroneController {
                                                             @Valid @RequestBody MedLoadRequestVo loadRequest) {
         droneMedicationService.loadToDrone(serialNo, loadRequest);
         return ResponseEntity.ok(new MedLoadSuccessResponseVo("Successfully loaded medication to the drone"));
+    }
+
+    /**
+     * Check medication loaded to a drone
+     *
+     * @param serialNo
+     */
+    @GetMapping(path = "/{serialNo}/check-medication")
+    ResponseEntity<MedLoadedResponseVo> checkMedication(@PathVariable String serialNo) {
+        var medications = droneMedicationService.getLoadedMedication(serialNo);
+        return ResponseEntity.ok(new MedLoadedResponseVo(medications));
     }
 
 }

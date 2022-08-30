@@ -1,6 +1,7 @@
 package com.drones.service.impl;
 
 import com.drones.bean.drone.DroneState;
+import com.drones.bean.medication.MedItemVo;
 import com.drones.bean.medication.MedLoadVo;
 import com.drones.bean.medication.MedLoadRequestVo;
 import com.drones.entity.Drone;
@@ -120,6 +121,16 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
             droneMedications.add(droneMedication);
         }
         return droneMedications;
+    }
+
+    /**
+     * Get loaded medication with drone serial number
+     * @param droneSerialNo
+     * @return MedLoadedResponseVo
+     */
+    public List<MedItemVo> getLoadedMedication(String droneSerialNo){
+       return droneMedicationRepository.getLoadedMedication(droneSerialNo)
+               .stream().map(MedItemVo::new).toList();
     }
 
 
