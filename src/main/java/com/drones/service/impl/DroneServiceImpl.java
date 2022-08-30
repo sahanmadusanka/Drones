@@ -5,16 +5,23 @@ import com.drones.bean.drone.DroneVo;
 import com.drones.entity.Drone;
 import com.drones.exception.BaseException;
 import com.drones.exception.DataNotFoundException;
+import com.drones.exception.DroneStatusException;
 import com.drones.repository.DroneRepository;
 import com.drones.service.DroneService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
 public class DroneServiceImpl implements DroneService {
 
     private DroneRepository droneRepository;
+
+    @Value("${drone.battery.loadingMinLevel:25}")
+    private int loadingMinCapacity;
 
     DroneServiceImpl(DroneRepository droneRepository) {
         this.droneRepository = droneRepository;
@@ -64,4 +71,23 @@ public class DroneServiceImpl implements DroneService {
         droneRepository.save(drone);
     }
 
+    /**
+     * Check drone in ready to loading state with "state"
+     * @param drone
+     * @return boolean if true drone is ready to loading
+     */
+    @Override
+    public boolean isDroneReadyToLoadWithState(Drone drone) {
+        return drone.getDroneStatus().getState() == DroneState.IDLE;
+    }
+
+    /**
+     * Check drone is ready to loading with battery level
+     * @param drone
+     * @return boolean if true drone is ready to loading
+     */
+    @Override
+    public boolean isDroneReadyToLoadWithBatteryLevel(Drone drone) {
+        return drone.getDroneStatus().getBatteryCapacity() > loadingMinCapacity;
+    }
 }

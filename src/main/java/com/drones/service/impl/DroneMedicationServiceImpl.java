@@ -30,9 +30,6 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
     private DroneService droneService;
     private MedicationService medicationService;
 
-    @Value("${drone.battery.loadingMinLevel:25}")
-    private int loadingMinCapacity;
-
     public DroneMedicationServiceImpl(DroneMedicationRepository droneMedicationRepository, DroneService droneService,
                                       MedicationService medicationService) {
         this.droneMedicationRepository = droneMedicationRepository;
@@ -71,12 +68,12 @@ public class DroneMedicationServiceImpl implements DroneMedicationService {
     }
 
     private void validateDroneState(Drone drone) {
-        if (drone.getDroneStatus().getState() != DroneState.IDLE)
+        if (!droneService.isDroneReadyToLoadWithState(drone))
             throw new DroneStatusException("To load medication to the drone, the drone should be in an idle state");
     }
 
     private void validateDroneBatteryCapacity(Drone drone) {
-        if (drone.getDroneStatus().getBatteryCapacity() < loadingMinCapacity)
+        if (!droneService.isDroneReadyToLoadWithBatteryLevel(drone))
             throw new DroneStatusException("Battery level is low to load medication onto the drone");
     }
 

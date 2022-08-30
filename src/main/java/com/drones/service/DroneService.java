@@ -28,4 +28,18 @@ public interface DroneService {
      */
     void setDroneState(Drone drone, DroneState droneStatus);
 
+    /**
+     * Check drone in ready to loading state with "state"
+     * @param drone
+     * @return boolean if true drone is ready to loading
+     */
+    boolean isDroneReadyToLoadWithState(Drone drone);
+
+    /**
+     * Check drone is ready to loading with battery level
+     * @param drone
+     * @return boolean if true drone is ready to loading
+     */
+    boolean isDroneReadyToLoadWithBatteryLevel(Drone drone);
+
 }
